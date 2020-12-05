@@ -23,7 +23,7 @@ class MyUtils{
         if(map == null) throw new NullPointerException();
 
         List <String>fullList = new ArrayList<>();
-        map.values().stream()
+        map.values()
                 .forEach(e->fullList.addAll(e.collect(Collectors.toList())));
 
         return fullList.stream()
