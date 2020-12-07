@@ -70,8 +70,7 @@ class MyUtils{
                 .filter(e->e!=null && !e.isBlank())
                 .map(e->{
                     e = e.replaceAll(" ", "").toLowerCase();
-                    e = e.substring(0,1).toUpperCase() + e.substring(1);
-                    return e;
+                    return e.substring(0,1).toUpperCase() + e.substring(1);
                 })
                 .distinct().sorted();
     }
