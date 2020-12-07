@@ -1,3 +1,4 @@
+import javax.swing.text.html.Option;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,24 +10,24 @@ public class Main {
         MyUtils myUtils = new MyUtils();
 
         //Task 1
-//        Map<String, Stream<String>> mapNames = new HashMap<>(){{
-//            put("Desktop", Stream.of("iVan", "PeTro", "Ira", null));
-//            put("Web", Stream.of("STepan", "ira", "Andriy", "an na", " "));
-//            put("Spring", Stream.of("Ivan", "Anna"));
-//        }};
-//
+        Map<String, Stream<String>> mapNames = new HashMap<>(){{
+            put("Desktop", Stream.of("iVan", "PeTro", "Ira", null));
+            put("Web", Stream.of("STepan", "ira", "Andriy", "an na", " "));
+            put("Spring", Stream.of("Ivan", "Anna"));
+        }};
+
 //        List<String> listNames = myUtils.nameList(mapNames)
 //                .collect(Collectors.toList());
 //
 //        System.out.println(listNames);
-//
+
        //Task 2
-//        List<Stream<String>> listPhoneNumbers = new ArrayList<>(Arrays.asList(
-//                Stream.of("093 987 65 43", "(050)1234567", "12-345"),
-//                Stream.of("067-21-436-57", "050-2345678",  "0939182736", "224-19-28", "22521"),
-//                Stream.of("(093)-11-22-334", "044 435-62-18", "721-73-45")
-//        ));
-//
+        List<Stream<String>> listPhoneNumbers = new ArrayList<>(Arrays.asList(
+                Stream.of("093 987 65 43", "(050)1234567", "12-345"),
+                Stream.of("067-21-436-57", "050-2345678",  "0939182736", "224-19-28", "22521"),
+                Stream.of("(093)-11-22-334", "044 435-62-18", "721-73-45")
+        ));
+
 //        Map<String, Stream<String>>mapPhone = myUtils.phoneNumbers(listPhoneNumbers);
 //
 //        mapPhone.forEach((e, stream) ->{
@@ -35,19 +36,25 @@ public class Main {
 //        });
 
         //Task 3
-//        Stream<IntStream> sumEvenStream = new ArrayList<>(Arrays.asList(
-//                IntStream.of(-2, -4, 1, 8, 3, 10),
-//                IntStream.of(2, -4, 4, 0, 3, 1),
-//                IntStream.of(1, -4, 3, 5, 3, 1)
-//        )).stream();
-//
+        Stream<IntStream> sumEvenStream = new ArrayList<>(Arrays.asList(
+                IntStream.of(-2, -4, 1, 8, 3, 10),
+                IntStream.of(2, -4, 4, 0, 3, 1),
+                IntStream.of(1, -4, 3, 5, 3, 1)
+        )).stream();
+
 //        System.out.println(myUtils.sumEven(sumEvenStream));
-//
+
         //Task 4
-//        IntStream countNumberInt = IntStream.of(3, 2, 1, 13, 21, 15);
-//        Stream<String>countNumberStr = Stream.of("9", "4", "23", "0", "32", "5");
-//
+        IntStream countNumberInt = IntStream.of(3, 2, 1, 13, 21, 15);
+        Stream<String>countNumberStr = Stream.of("9", "4", "23", "0", "32", "5");
+
 //        System.out.println(myUtils.countNumbers(countNumberInt, countNumberStr));
+
+        //Task 5
+        Stream<Integer> findDuplicateInt = Stream.of(3, 2 ,1 ,1, 12 ,3 , 8 , 2, 4, 2);
+//        myUtils.duplicateElements(findDuplicateInt)
+//            .forEach(System.out::println);
+
     }
 }
 
@@ -99,18 +106,24 @@ class MyUtils{
                 .map(e -> e.isEmpty() ? 0 : e.getAsInt())
                 .reduce(0, Integer::sum);
     }
+
     int countNumbers(IntStream intNum, Stream<String> strNum){
         Stream<String> intToStr = intNum.mapToObj(String::valueOf);
         Stream<String> mainStream = Stream.concat(strNum, intToStr);
 
-        return Integer.parseInt(mainStream
-                .filter(e->e!="0")
-                .reduce("0", (acc,e)->{
-                    if(Integer.parseInt(e)%3==0 || e.contains("3")){
-                        return String.valueOf(Integer.parseInt(acc)+1);
-                    }
-                    else return acc;
-        }));
+        return (int) mainStream
+                .filter(e-> !e.equals("0") )
+                .filter(e->Integer.parseInt(e)%3==0 || e.contains("3"))
+                .count();
+    }
+
+    Stream<Integer> duplicateElements(Stream<Integer> stream){
+        Set<Integer> items = new HashSet<Integer>();
+
+        return  stream
+                    .filter(e -> !items.add(e))
+                    .distinct()
+                    .sorted();
     }
 }
 
